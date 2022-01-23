@@ -5,6 +5,8 @@ import Chart from '../components/Chart';
 
 import auth from '../firebase'
 
+//git deluje
+
 const StatScreen = ({navigation}) => {
 
     const handleSignout = () => {
