@@ -7,6 +7,9 @@ import auth from '../firebase'
 
 //git deluje
 
+
+//git deluje #2
+
 const StatScreen = ({navigation}) => {
 
     const handleSignout = () => {
