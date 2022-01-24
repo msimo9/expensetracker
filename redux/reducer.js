@@ -3,17 +3,19 @@ import { addDataToFirestore } from '../firestore';
 export const ADD_ITEM = 'ADD_ITEM'
 export const REMOVE_ITEM = 'REMOVE_ITEM'
 export const SET_FILTER = 'SET_FILTER'
+export const SAVE_LOGIN = 'SAVE_LOGIN'
 
 const initialState = {
     itemList: [],
     sumByMonth: [0,0,0,0,0,0,0,0,0,0,0,500,600],
     total: 0,
     filter: "all",
+    uid: null,
 }
 
-export const addItem = (item, price, type, date, month) => ({
+export const addItem = (item, price, type, date, month, uid) => ({
     type: ADD_ITEM,
-    payload: {item, price, type, date, month}
+    payload: {item, price, type, date, month, uid}
 })
 
 export const removeItem = (id, price) => ({
@@ -25,6 +27,10 @@ export const setFilter = (filterType) => ({
     type: SET_FILTER,
     payload: {filterType}
 })
+export const saveLogin = (uid) => ({
+    type: SAVE_LOGIN,
+    payload: {uid}
+})
 
 
 const rootReducer = (state = initialState, action) => {
@@ -34,7 +40,11 @@ const rootReducer = (state = initialState, action) => {
             let currentMonth = parseInt(action.payload.month);
             let name = action.payload.item;
             let price = action.payload.price;
-            addDataToFirestore(name, price);
+            let type = action.payload.type;
+            let date = action.payload.date;
+            let month = action.payload.month;
+            let uid = state.uid;
+            addDataToFirestore(name, price, type, date, month, uid);
             let tempArr = state.sumByMonth;
             tempArr[currentMonth] += parseInt(action.payload.price)
             return{
@@ -46,6 +56,7 @@ const rootReducer = (state = initialState, action) => {
                     type: action.payload.type,
                     date: action.payload.date,
                     month: action.payload.month,
+                    uid: action.payload.uid,
                 }).reverse(),
                 total: newTotal,
                 sumByMonth: tempArr,
@@ -60,6 +71,12 @@ const rootReducer = (state = initialState, action) => {
                 ...state,
                 itemList: state.itemList.filter(item => item.id !== action.payload.id),
                 total: newTotal
+            }
+        case SAVE_LOGIN:
+            console.log("UID in SAVE_LOGIN", action.payload.uid)
+            return{
+                ...state,
+                uid: action.payload.uid,
             }
         case SET_FILTER:
             let currentFilter = action.payload.filterType;

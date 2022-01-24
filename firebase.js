@@ -42,5 +42,4 @@ export const db = getFirestore();
 
 const auth = getAuth();
 
-
 export default auth;

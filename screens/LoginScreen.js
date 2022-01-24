@@ -2,17 +2,29 @@ import { StyleSheet, Text, View, TouchableOpacity, TextInput, KeyboardAvoidingVi
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged} from "firebase/auth";
 import React, { useEffect, useState } from 'react';
 
+import { useDispatch } from 'react-redux';
+
 import auth from '../firebase'
+
+import { saveLogin } from '../redux/reducer';
+
+import { getDataFromFirestore } from '../firestore';
+
 
 function LoginScreen({navigation}) {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    const dispatch = useDispatch()
+
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if(user){
                 const uid = user.uid;
+                dispatch(saveLogin(user.uid));
+                //console.log(getDataFromFirestore(user.uid))
+                console.log("loginscreen - user id is: ", user.uid)
                 navigation.replace('List');
             }
         })
@@ -23,6 +35,7 @@ function LoginScreen({navigation}) {
         createUserWithEmailAndPassword(auth, email, password)
         .then(userCredentials => {
             const user = userCredentials.user;
+            dispatch(saveLogin(user.uid));
             console.log("User signed up with: ")
             console.log("-email: ", user.email)
             navigation.replace('List')
@@ -40,6 +53,7 @@ function LoginScreen({navigation}) {
         signInWithEmailAndPassword(auth, email, password)
         .then(userCredentials => {
             const user = userCredentials.user;
+            dispatch(saveLogin(user.uid));
             console.log("Successfully logged in with: ")
             console.log("-email: ", user.email);
             navigation.replace('List');
@@ -143,6 +157,5 @@ const styles = StyleSheet.create({
         color: "#D3DEDC",
     }
 });
-
 
 export default LoginScreen;

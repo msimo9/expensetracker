@@ -4,6 +4,8 @@ import { useSelector } from 'react-redux';
 import {Ionicons} from '@expo/vector-icons';
 import { useDispatch } from 'react-redux'
 import {removeItem} from '../redux/reducer'
+import { populateArray } from '../redux/reducer';
+
 
 
 function ListView(){

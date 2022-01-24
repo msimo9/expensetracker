@@ -2,6 +2,8 @@ import React, {useState} from 'react'
 import {StyleSheet, View, Text, TouchableOpacity, TextInput, Picker, ScrollView} from 'react-native'
 import {Ionicons} from '@expo/vector-icons'
 
+import { useSelector } from 'react-redux'
+
 import { useDispatch } from 'react-redux'
 import {addItem} from '../redux/reducer'
 
@@ -10,6 +12,8 @@ const ModalScreen = ({navigation}) => {
     const [value, setValue] = useState('');
     const [value_price, setPrice] = useState('');
     const [selectedValue, setSelectedValue] = useState("FOOD");
+
+    const uid = useSelector(state => state.uid);
 
     const date = new Date().getDate();
     const month = new Date().getMonth()+1;
