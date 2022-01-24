@@ -4,6 +4,7 @@ export const ADD_ITEM = 'ADD_ITEM'
 export const REMOVE_ITEM = 'REMOVE_ITEM'
 export const SET_FILTER = 'SET_FILTER'
 export const SAVE_LOGIN = 'SAVE_LOGIN'
+export const POPULATE_ITEMS = 'POPULATE_ITEMS'
 
 const initialState = {
     itemList: [],
@@ -30,6 +31,11 @@ export const setFilter = (filterType) => ({
 export const saveLogin = (uid) => ({
     type: SAVE_LOGIN,
     payload: {uid}
+})
+
+export const populateStateItems = (arr) => ({
+    type: POPULATE_ITEMS,
+    payload: {arr},
 })
 
 
@@ -73,10 +79,21 @@ const rootReducer = (state = initialState, action) => {
                 total: newTotal
             }
         case SAVE_LOGIN:
-            console.log("UID in SAVE_LOGIN", action.payload.uid)
             return{
                 ...state,
                 uid: action.payload.uid,
+            }
+        case POPULATE_ITEMS:
+            console.log("POPULATE ITEMS IN REDUCER REACHED")
+            console.log("dela? ",action.payload.arr)
+            const fetchedArr = action.payload.arr;
+            console.log("fetched array length: ",fetchedArr.length)
+            let stateArr = state.itemList;
+            let concatenatedArr = state.itemList.concat(action.payload.arr);
+            console.log("concatenated array length: ",concatenatedArr.length)
+            return{
+                ...state,
+                itemList: concatenatedArr
             }
         case SET_FILTER:
             let currentFilter = action.payload.filterType;

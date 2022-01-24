@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import auth from '../firebase'
 
 import { saveLogin } from '../redux/reducer';
+import { populateStateItems } from '../redux/reducer';
 
 import { getDataFromFirestore } from '../firestore';
 
@@ -19,12 +20,21 @@ function LoginScreen({navigation}) {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if(user){
                 const uid = user.uid;
                 dispatch(saveLogin(user.uid));
-                //console.log(getDataFromFirestore(user.uid))
-                console.log("loginscreen - user id is: ", user.uid)
+                let arr = []
+                const arr2 = await getDataFromFirestore(user.uid)
+                console.log("length of arr2 ", arr2.length)
+                dispatch(populateStateItems(arr2))
+                /*getDataFromFirestore(user.uid)
+                .then(data => (arr = data))
+                .then(data => console.log(data))
+                .then(console.log(":o ",arr.length))
+                .then(data => dispatch(populateStateItems(data)));*/
+                console.log(arr.length)
+                //dispatch(populateStateItems(arr));
                 navigation.replace('List');
             }
         })

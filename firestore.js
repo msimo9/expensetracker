@@ -15,14 +15,19 @@ export const addDataToFirestore = async (value, value_price, type, date, month, 
     });
 }
 
-/*
-export const getDataFromFirestore = async (uid) => {
-  const q = query(collection(db, uid));
+
+export const getDataFromFirestore = async uid => {
   let arr = [];
-  const querySnapshot = await getDocs(q);
+
+  const querySnapshot = await getDocs(collection(db, uid));
   querySnapshot.forEach((doc) => {
     // doc.data() is never undefined for query doc snapshots
     arr.push(doc.data());
-    console.log(doc.data())
+    console.log(arr[arr.length-1]);
   });
-}*/
+  for(let i=0; i<arr.length; i++){
+    console.log("firestore print of arr items ",arr[i])
+  }
+
+  return arr;
+}
