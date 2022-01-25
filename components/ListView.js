@@ -35,7 +35,7 @@ function ListView(){
                     <FlatList
                         data={filteredListItems}
                         extraData={filter}
-                        //keyExtractor={item => item.id.toString()}
+                        keyExtractor={item => item.id.toString()}
                         renderItem={({item})=> (
                             <View style={styles.listItemContainer}>
                                 <View style={styles.listItemMetaContainer}>

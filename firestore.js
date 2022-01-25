@@ -4,9 +4,10 @@ import { collection, addDoc, doc, setDoc, getDocs, query } from "firebase/firest
 
 import { useSelector } from "react-redux";
 
-export const addDataToFirestore = async (value, value_price, type, date, month, uid) => {
+export const addDataToFirestore = async (itemID, value, value_price, type, date, month, uid) => {
   console.log("firestore uid: ", uid)
   await addDoc(collection(db, uid), {
+      id: itemID,
       name: value,
       price: value_price,
       type: type,

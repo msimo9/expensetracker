@@ -12,6 +12,7 @@ const initialState = {
     total: 0,
     filter: "all",
     uid: null,
+    executed: false,
 }
 
 export const addItem = (item, price, type, date, month, uid) => ({
@@ -50,13 +51,14 @@ const rootReducer = (state = initialState, action) => {
             let date = action.payload.date;
             let month = action.payload.month;
             let uid = state.uid;
-            addDataToFirestore(name, price, type, date, month, uid);
+            let itemID = Math.random()
+            addDataToFirestore(itemID, name, price, type, date, month, uid);
             let tempArr = state.sumByMonth;
             tempArr[currentMonth] += parseInt(action.payload.price)
             return{
                 ...state,
                 itemList: state.itemList.concat({
-                    id: Math.random(),
+                    id: itemID,
                     name: action.payload.item,
                     price: action.payload.price,
                     type: action.payload.type,
@@ -84,16 +86,23 @@ const rootReducer = (state = initialState, action) => {
                 uid: action.payload.uid,
             }
         case POPULATE_ITEMS:
-            console.log("POPULATE ITEMS IN REDUCER REACHED")
-            console.log("dela? ",action.payload.arr)
-            const fetchedArr = action.payload.arr;
-            console.log("fetched array length: ",fetchedArr.length)
-            let stateArr = state.itemList;
-            let concatenatedArr = state.itemList.concat(action.payload.arr);
-            console.log("concatenated array length: ",concatenatedArr.length)
-            return{
-                ...state,
-                itemList: concatenatedArr
+            if(!state.executed){
+                console.log("POPULATE ITEMS IN REDUCER REACHED")
+                console.log("dela? ",action.payload.arr)
+                const fetchedArr = action.payload.arr;
+                console.log("fetched array length: ",fetchedArr.length)
+                let stateArr = state.itemList;
+                let concatenatedArr = state.itemList.concat(action.payload.arr);
+                console.log("concatenated array length: ",concatenatedArr.length)
+                return{
+                    ...state,
+                    itemList: concatenatedArr,
+                    executed: true,
+                }
+            }else{
+                return{
+                    ...state,
+                }
             }
         case SET_FILTER:
             let currentFilter = action.payload.filterType;
