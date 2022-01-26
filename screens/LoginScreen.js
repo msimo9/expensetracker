@@ -8,6 +8,7 @@ import auth from '../firebase'
 
 import { saveLogin } from '../redux/reducer';
 import { populateStateItems } from '../redux/reducer';
+import { updateTotalSum } from '../redux/reducer';
 
 import { getDataFromFirestore } from '../firestore';
 
@@ -25,8 +26,14 @@ function LoginScreen({navigation}) {
                 const uid = user.uid;
                 dispatch(saveLogin(user.uid));
                 let arr = []
+                let totalSum = 0;
                 const arr2 = await getDataFromFirestore(user.uid)
+                for (let i=0; i<arr2.length; i++){
+                    totalSum += parseInt(arr2[i].price)
+                }
+                console.log("total sum in login screen ", totalSum);
                 console.log("length of arr2 ", arr2.length)
+                dispatch(updateTotalSum(totalSum))
                 dispatch(populateStateItems(arr2))
                 /*getDataFromFirestore(user.uid)
                 .then(data => (arr = data))

@@ -1,10 +1,13 @@
 import { addDataToFirestore } from '../firestore';
 
+import { deleteDataFromFirestore } from '../firestore';
+
 export const ADD_ITEM = 'ADD_ITEM'
 export const REMOVE_ITEM = 'REMOVE_ITEM'
 export const SET_FILTER = 'SET_FILTER'
 export const SAVE_LOGIN = 'SAVE_LOGIN'
 export const POPULATE_ITEMS = 'POPULATE_ITEMS'
+export const UPDATE_SUM_FETCHED = 'UPDATE_SUM_FETCHED'
 
 const initialState = {
     itemList: [],
@@ -37,6 +40,11 @@ export const saveLogin = (uid) => ({
 export const populateStateItems = (arr) => ({
     type: POPULATE_ITEMS,
     payload: {arr},
+})
+
+export const updateTotalSum = (totalSum) => ({
+    type: UPDATE_SUM_FETCHED,
+    payload: {totalSum},
 })
 
 
@@ -73,7 +81,8 @@ const rootReducer = (state = initialState, action) => {
             //add logic for removing sum from SumByMonth
 
 
-            
+            deleteDataFromFirestore(state.uid, action.payload.id)
+
             newTotal = state.total - parseInt(action.payload.price);
             return{
                 ...state,
@@ -116,6 +125,13 @@ const rootReducer = (state = initialState, action) => {
                     ...state,
                     filter: action.payload.filterType,
                 }
+            }
+
+        case UPDATE_SUM_FETCHED:
+            let totalSum = parseInt(action.payload.totalSum);
+            return{
+                ...state,
+                total: totalSum,
             }
         default:
             return state
