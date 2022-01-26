@@ -9,8 +9,20 @@ import auth from '../firebase'
 import { saveLogin } from '../redux/reducer';
 import { populateStateItems } from '../redux/reducer';
 import { updateTotalSum } from '../redux/reducer';
+import { updateSumByMonth } from '../redux/reducer';
 
 import { getDataFromFirestore } from '../firestore';
+
+const populateSumByMonth = arr => {
+    let sumArr = [0,0,0,0,0,0,0,0,0,0,0,0,0]
+    let monthNumber = 0;
+    for (let i=0; i<arr.length; i++){
+        monthNumber = arr[i].month;
+        sumArr[monthNumber] += parseInt(arr[i].price)
+    }
+
+    return sumArr;
+}
 
 
 function LoginScreen({navigation}) {
@@ -31,17 +43,10 @@ function LoginScreen({navigation}) {
                 for (let i=0; i<arr2.length; i++){
                     totalSum += parseInt(arr2[i].price)
                 }
-                console.log("total sum in login screen ", totalSum);
-                console.log("length of arr2 ", arr2.length)
+                const sumByMonth = populateSumByMonth(arr2);
                 dispatch(updateTotalSum(totalSum))
+                dispatch(updateSumByMonth(sumByMonth))
                 dispatch(populateStateItems(arr2))
-                /*getDataFromFirestore(user.uid)
-                .then(data => (arr = data))
-                .then(data => console.log(data))
-                .then(console.log(":o ",arr.length))
-                .then(data => dispatch(populateStateItems(data)));*/
-                console.log(arr.length)
-                //dispatch(populateStateItems(arr));
                 navigation.replace('List');
             }
         })

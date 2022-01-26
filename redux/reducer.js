@@ -8,6 +8,7 @@ export const SET_FILTER = 'SET_FILTER'
 export const SAVE_LOGIN = 'SAVE_LOGIN'
 export const POPULATE_ITEMS = 'POPULATE_ITEMS'
 export const UPDATE_SUM_FETCHED = 'UPDATE_SUM_FETCHED'
+export const UPDATE_MONTH_TOTAL = 'UPDATE_MONTH_TOTAL'
 
 const initialState = {
     itemList: [],
@@ -45,6 +46,11 @@ export const populateStateItems = (arr) => ({
 export const updateTotalSum = (totalSum) => ({
     type: UPDATE_SUM_FETCHED,
     payload: {totalSum},
+})
+
+export const updateSumByMonth = (arr) => ({
+    type: UPDATE_MONTH_TOTAL,
+    payload: {arr},
 })
 
 
@@ -132,6 +138,11 @@ const rootReducer = (state = initialState, action) => {
             return{
                 ...state,
                 total: totalSum,
+            }
+        case UPDATE_MONTH_TOTAL:
+            return{
+                ...state,
+                sumByMonth: action.payload.arr,
             }
         default:
             return state
