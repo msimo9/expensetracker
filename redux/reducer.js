@@ -24,9 +24,9 @@ export const addItem = (item, price, type, date, month, uid) => ({
     payload: {item, price, type, date, month, uid}
 })
 
-export const removeItem = (id, price) => ({
+export const removeItem = (id, price, month) => ({
     type: REMOVE_ITEM,
-    payload: {id, price}
+    payload: {id, price, month}
 })
 
 export const setFilter = (filterType) => ({
@@ -88,11 +88,13 @@ const rootReducer = (state = initialState, action) => {
 
 
             deleteDataFromFirestore(state.uid, action.payload.id)
-
+            let sumArr = state.sumByMonth;
+            sumArr[parseInt(action.payload.month)]-=action.payload.price;
             newTotal = state.total - parseInt(action.payload.price);
             return{
                 ...state,
                 itemList: state.itemList.filter(item => item.id !== action.payload.id),
+                sumByMonth: sumArr,
                 total: newTotal
             }
         case SAVE_LOGIN:

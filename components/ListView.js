@@ -15,8 +15,8 @@ function ListView(){
     const filter = useSelector(state => state.filter)
 
     const dispatch = useDispatch()
-    const onRemoveNote = (id, price) => {
-        dispatch(removeItem(id, price))
+    const onRemoveNote = (id, price, month) => {
+        dispatch(removeItem(id, price, month))
     }
 
     const filteredListItems = listItems.filter((item)=>{
@@ -54,7 +54,7 @@ function ListView(){
                                         {item.type}
                                     </Text>
                                     <TouchableOpacity
-                                        onPress={() => onRemoveNote(item.id, item.price)}
+                                        onPress={() => onRemoveNote(item.id, item.price, item.month)}
                                         style={styles.removeItem}
                                     >
                                         <Ionicons name="ios-trash-bin-outline" color="#7C99AC" size={20} />

@@ -37,7 +37,20 @@ const populateMonthNames = (numberOfMonths) => {
         j-=1;
         if(j==0)j=12
     }
-    return monthArray.reverse()
+    return monthArray.reverse();
+    
+}
+const populateMonthSums_new = (sumArray, numberOfMonths) => {
+    const currentMonth = new Date().getMonth()+1;
+    let monthSumArray = [];
+    let j=parseInt(currentMonth);
+    for (let i=0; i<numberOfMonths; i++){
+        monthSumArray.push(sumArray[j])
+        j-=1;
+        if(j==0)j=12
+    }
+    return monthSumArray.reverse();
+    
 }
 
 const populateMonthSums = (sumArray, numberOfMonths) => {
@@ -78,7 +91,7 @@ const Chart = () => {
     }
 
     newMonthNames = populateMonthNames(5);
-    newMonthSum = populateMonthSums(sumByMonth, 5);
+    newMonthSum = populateMonthSums_new(sumByMonth, 5);
 
     return(
         <View style={styles.container}>
